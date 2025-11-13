@@ -1,0 +1,49 @@
+//approach - 1
+// class Solution {
+// public:
+//     bool uniqueOccurrences(vector<int>& arr) {
+//         unordered_map<int, int> mp;
+//         //key - number, value - occurrence
+
+//         for(int i = 0; i < arr.size(); i++) {
+//             mp[arr[i]]++;
+//         }
+
+//         unordered_set<int> st;
+//         for(auto &data: mp) {
+//             int freq = data.second;
+//             if(st.find(freq) != st.end()) {
+//                 return false;
+//             }
+//             st.insert(freq);
+//         }
+
+//         return true;
+//     }
+// };
+
+//approach - 2
+class Solution {
+public:
+    bool uniqueOccurrences(vector<int>& arr) {
+        vector<int> occ(2001, 0);
+
+        for(int i = 0; i < arr.size(); i++) {
+            occ[arr[i] + 1000]++;
+        }
+        //or
+        // for(auto &data: arr) {
+        //     occ[data + 1000]++;
+        // }
+
+        sort(begin(occ), end(occ));
+
+        for(int i = 0; i < 2001; i++) {
+            if(occ[i] != 0 && occ[i] == occ[i - 1]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+};
