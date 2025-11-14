@@ -1,0 +1,40 @@
+//approach - 1
+// class Solution {
+// public:
+//     int numIdenticalPairs(vector<int>& nums) {
+//         int n = nums.size();
+//         int countGoodPairs = 0;
+
+//         for(int i = 0; i < n; i++) {
+//             int ele = nums[i];
+//             for(int j = i + 1; j < n; j++) {
+//                 if(ele == nums[j]) {
+//                     countGoodPairs++;
+//                 }
+//             }
+//         }
+
+//         return countGoodPairs;
+//     }
+// };
+
+
+//approach - 2
+class Solution {
+public:
+    int numIdenticalPairs(vector<int>& nums) {
+        int goodPairCount = 0;
+        unordered_map<int, int> mp;
+        
+        for(int &num: nums) {
+            mp[num]++;
+        }
+
+        for(auto &data: mp) {
+            int pcount = data.second;
+            goodPairCount += (pcount*(pcount - 1))/2;
+        }
+    
+        return goodPairCount;
+    }
+};
