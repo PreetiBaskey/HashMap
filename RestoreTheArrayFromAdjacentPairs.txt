@@ -1,0 +1,36 @@
+class Solution {
+public:
+    void dfs(int start, int prev, unordered_map<int, vector<int>> &mp, vector<int> &result) {
+        result.push_back(start);
+
+        for(int &v: mp[start]) {
+            if(v != prev) {
+                dfs(v, start, mp, result);
+            }
+        }
+    }
+    vector<int> restoreArray(vector<vector<int>>& adjacentPairs) {
+        unordered_map<int, vector<int>> mp;
+
+        for(vector<int> &ele: adjacentPairs) {
+            int ele1 = ele[0];
+            int ele2 = ele[1];
+
+            mp[ele1].push_back(ele2);
+            mp[ele2].push_back(ele1);
+        }
+
+        int startEle;
+        for(auto &data: mp) {
+            if(data.second.size() == 1) {
+                startEle = data.first;
+                break;
+            }
+        }
+
+        vector<int> result;
+        dfs(startEle, -1, mp, result);
+
+        return result;
+    }
+};
