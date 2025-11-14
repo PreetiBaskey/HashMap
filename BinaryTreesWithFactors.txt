@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int MOD = 1e9 + 7;
+    int numFactoredBinaryTrees(vector<int>& arr) {
+        long treesCount = 0;
+        unordered_map<int, long> mp;
+        int n = arr.size();
+
+        sort(begin(arr), end(arr));
+
+        mp[arr[0]] = 1;
+        for(int i = 1; i < n; i++) {
+            int root = arr[i];
+            mp[root] = 1;
+            for(int j = 0; j < i; j++) {
+                //leftCount = lc
+                //rightCount = rc;
+                int lc = arr[j];
+                int rc = root/lc;
+                if(root%lc == 0 && mp.find(rc) != mp.end()) {
+                    mp[root] += mp[lc] * mp[rc];
+                }
+            }
+        }
+        for(auto &val: mp) {
+            treesCount = (treesCount + val.second) % MOD;
+        }
+
+        return treesCount;     
+    }
+};
