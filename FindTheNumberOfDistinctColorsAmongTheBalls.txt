@@ -1,0 +1,60 @@
+//approach 1 - causing memory limit exceeded
+// class Solution {
+// public:
+//     vector<int> queryResults(int limit, vector<vector<int>>& queries) {
+//         int n = queries.size();
+//         vector<int> result(n);
+//         vector<int> ballArr(limit + 1, -1);
+//         unordered_map<int, int> colorCountMp;
+
+//         for(int i = 0; i < n; i++) {
+//             int ball = queries[i][0];
+//             int color = queries[i][1];
+
+//             if(ballArr[ball] != -1) {
+//                 int prevColor = ballArr[ball];
+//                 colorCountMp[prevColor]--;
+//                 if(colorCountMp[prevColor] == 0) {
+//                     colorCountMp.erase(prevColor);
+//                 }
+//             }
+//             ballArr[ball] = color;
+//             colorCountMp[color]++;
+
+//             result[i] = colorCountMp.size();
+//         }
+
+//         return result;
+//     } 
+// };
+
+//approach - 2
+class Solution {
+public:
+    vector<int> queryResults(int limit, vector<vector<int>>& queries) {
+        int n = queries.size();
+        vector<int> result(n);
+        unordered_map<int, int> ballColorMp; //key - ball, value - color
+        unordered_map<int, int> colorCountMp; //key - color, value - count
+
+        for(int i = 0; i < n; i++) {
+            int ball = queries[i][0];
+            int color = queries[i][1];
+
+            if(ballColorMp.find(ball) != ballColorMp.end()) {
+                int prevColor = ballColorMp[ball];
+                colorCountMp[prevColor]--;
+                if(colorCountMp[prevColor] == 0) {
+                    colorCountMp.erase(prevColor);
+                }
+                ballColorMp[ball] = color;
+            }
+            ballColorMp[ball] = color;
+            colorCountMp[color]++;
+
+            result[i] = colorCountMp.size();
+        }
+        
+        return result;
+    } 
+};
