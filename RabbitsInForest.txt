@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int numRabbits(vector<int>& answers) {
+        int n = answers.size();
+        //key - answer, value - count
+        unordered_map<int, int> mp;
+        int rabbitsCount = 0;
+
+        for(int &answer: answers) {
+            mp[answer]++;
+        }
+
+        for(auto &ele: mp) {
+            int answer = ele.first;
+            int answerCount = ele.second;
+
+            int groupSize = answer + 1;
+            int groupCount = ceil((double)answerCount/groupSize);
+
+            int rabbits = groupCount * groupSize;
+
+            rabbitsCount += rabbits;
+        }
+
+        return rabbitsCount;
+    }
+};
