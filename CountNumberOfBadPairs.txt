@@ -1,0 +1,48 @@
+//approach 1 - time limit exceeded
+// class Solution {
+// public:
+//     long long countBadPairs(vector<int>& nums) {
+//         long long badPairCount = 0;   
+//         int n = nums.size();
+
+//         for(int i = 0; i < n; i++) {
+//             for(int j = i + 1; j < n; j++) {
+//                 if(i < j) {
+//                     if(j - i != (nums[j] - nums[i])) {
+//                         badPairCount++;
+//                     }
+//                 }
+//             }
+//         }
+
+//         return badPairCount;
+//     }
+// };
+
+class Solution {
+public:
+    long long countBadPairs(vector<int>& nums) {
+        long long badPairCount = 0;   
+        int n = nums.size();
+
+        // j - i != nums[j] - nums[i] is converted to
+        // nums[i] - i != nums[j] - j
+        for(int i = 0; i < n; i++) {
+            nums[i] = nums[i] - i;
+        }
+
+        unordered_map<int, int> mp; //key - j, value - jcount
+        mp[nums[0]] = 1;
+        for(int j = 1; j < n; j++) {
+            int countOfNumsOfJ = mp[nums[j]];
+            int totalJCount = j;
+            int badPairs = totalJCount - countOfNumsOfJ;
+
+            badPairCount += badPairs;
+
+            mp[nums[j]]++;
+        }
+
+        return badPairCount;
+    }
+};
