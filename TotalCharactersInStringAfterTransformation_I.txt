@@ -1,0 +1,83 @@
+//approach - 1 - causing time limit exceeded
+// class Solution {
+// public:
+//     int MOD = 1e9 + 7;
+//     int lengthAfterTransformations(string s, int t) {
+//         int n = s.length();
+//         unordered_map<char, int> mp; //key - char, value - charCount
+//         int result = 0;
+
+//         for(int i = 0; i < n; i++) {
+//             char ch = s[i];
+//             mp[ch]++;
+//         }
+
+//         for(int i = 0; i < t; i++) {
+//             unordered_map<char, int> temp;
+//             for(auto &ele: mp) {
+//                 char ch = ele.first;
+//                 int freq = ele.second;
+
+//                 if(ch != 'z') {
+//                     char newChar = ch + 1;
+//                     temp[newChar] = (temp[newChar] + freq) % MOD;
+//                 }
+//                 else {
+//                     temp['a'] = (temp['a'] + freq) % MOD;
+//                     temp['b'] = (temp['b'] + freq) % MOD;
+//                 }
+//             }
+//             // mp = move(temp);
+//             mp = temp;
+//         }
+
+//         for(auto &ele: mp) {
+//             int count = ele.second;
+//             result = (result + count) % MOD;
+//         }
+
+//         return result;
+//     }
+// };
+
+
+//approach - 2 - using constraints hint - only lower case letter used
+class Solution {
+public:
+    int MOD = 1e9 + 7;
+    int lengthAfterTransformations(string s, int t) {
+        int n = s.length();
+        vector<int> charCount(26, 0);
+        int result = 0;
+
+        for(char &ch: s) {
+            charCount[ch - 'a']++;
+        }
+
+        for(int i = 0; i < t; i++) {
+            vector<int> temp(26, 0);
+            for(int i = 0; i < 26; i++) {
+                char ch = i + 'a';
+                int freq = charCount[i];
+
+                if(ch != 'z') {
+                    char newChar = ch + 1;
+                    temp[newChar - 'a'] = (temp[newChar - 'a'] + freq) % MOD;
+                }
+                else {
+                    temp['a' - 'a'] = (temp['a' - 'a'] + freq) % MOD;
+                    temp['b' - 'a'] = (temp['b' - 'a'] + freq) % MOD;
+                }
+            }
+            // mp = move(temp);
+            charCount = temp;
+        }
+
+        for(int i = 0; i < 26; i++) {
+            int count = charCount[i];
+            result = (result + count) % MOD;
+        }
+
+        return result;
+    }
+};
